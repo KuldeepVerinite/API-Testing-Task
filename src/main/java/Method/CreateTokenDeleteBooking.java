@@ -8,6 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class CreateTokenDeleteBooking {
     PostService ps= new PostService();
+    DeleteService ds=new DeleteService();
 
     public void createToken1(String username, String password,int Scode,int id){
 
@@ -18,12 +19,14 @@ public class CreateTokenDeleteBooking {
         String token = jsonObject.getString("token");
         System.out.println(token);
 
-        given().baseUri(RestfulBooker.Base.getUrl())
-                .header("Cookie","token="+token)
-                .contentType("application/json")
-                .log().all()
-                .when().delete(RestfulBooker.Booking.getUrl()+"/"+id)
-                .then().log().all().assertThat().statusCode(201);
+        ds.deleteBooking(id,token);
+//        given().baseUri(RestfulBooker.Base.getUrl())
+//                .header("Cookie","token="+token)
+//                .contentType("application/json")
+//                .log().all()
+//                .when().delete(RestfulBooker.Booking.getUrl()+"/"+id)
+//                .then().log().all().assertThat().statusCode(201);
     }
+
 
 }

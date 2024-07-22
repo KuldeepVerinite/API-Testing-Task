@@ -14,7 +14,7 @@ public class PutService {
                 .then().assertThat().statusCode(200).log().all();
     }
 
-    public String getBody(String firstname, String lastname){
+    private String getBody(String firstname, String lastname){
         return "{" +
                 "\"firstname\":\"" + firstname + "\"" +
                 ", \"lastname\":\"" + lastname + "\"" +

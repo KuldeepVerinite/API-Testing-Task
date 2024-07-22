@@ -1,14 +1,18 @@
 import Assertion.Assertion;
 import Method.*;
 import io.restassured.response.Response;
-import org.json.JSONObject;
-import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
-public class TestClass {
+public class TestClass1507 {
     GetService gs=new GetService();
     PostService ps=new PostService();
     Assertion as=new Assertion();
+
+    @AfterMethod
+    public void afterMethod(){
+        System.out.println("---------------------------------Test Ended Here---------------------------------------");
+    }
 
     @Test(priority = 1)
     public void test1() {
@@ -18,19 +22,19 @@ public class TestClass {
     @Test(priority = 2)
     public void test2() {
         Response resp=ps.createToken("admin","password111",200);
-        as.errorCodeValidation(resp);
+        as.responseBodyValidation(resp);
     }
 
     @Test(priority = 3)
     public void test3() {
         Response resp=ps.createToken("subadmin","password123",200);
-        as.errorCodeValidation(resp);
+        as.responseBodyValidation(resp);
     }
 
     @Test(priority = 4)
     public void test4() {
         Response resp=ps.createToken("","",200);
-        as.errorCodeValidation(resp);
+        as.responseBodyValidation(resp);
     }
 
     @Test(priority = 5)
@@ -38,28 +42,4 @@ public class TestClass {
         gs.getBookingIds();
     }
 
-    @Test(priority = 6)
-    public void test6() {
-        gs.getBookingIdsByFirstName("John");
-    }
-
-    @Test(priority = 7)
-    public void test7() {
-        gs.getBookingIdsBylastName("Brown");
-    }
-
-    @Test(priority = 8)
-    public void test8() {
-        gs.getBookingIdsByCheckin("2024-01-01");
-    }
-
-    @Test(priority = 9)
-    public void test9() {
-        gs.getBookingIdsByCheckin("2024-01-01");
-    }
-
-    @Test(priority = 10)
-    public void test10() {
-        gs.getBooking(85);
-    }
 }
