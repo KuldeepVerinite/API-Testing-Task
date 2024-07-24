@@ -6,19 +6,26 @@ import static io.restassured.RestAssured.given;
 
 public class PatchService {
 
-    public void patchUpdateBooking(int totalprice, String lastname,int id){
+    public void patchUpdateBooking(String firstname, int id,int sCode, String Auth){
         given().baseUri(RestfulBooker.Base.getUrl())
-                .header("Authorization","Basic YWRtaW46cGFzc3dvcmQxMjM=")
+                .header("Authorization",Auth)
                 .contentType("application/json")
-                .body(getBody(totalprice, lastname)).log().all()
+                .body(getBody(firstname)).log().all()
                 .when().patch(RestfulBooker.Booking.getUrl()+"/"+id)
-                .then().assertThat().statusCode(200).log().all();
+                .then().assertThat().statusCode(sCode).log().all();
     }
 
-    public String getBody(int totalprice, String lastname){
+    public void partialBookingCookie(String firstname, int id, int sCode, String token ){
+        given().baseUri(RestfulBooker.Base.getUrl()).header("Cookie","token="+token)
+                .contentType("application/json")
+                .body(getBody(firstname)).log().all()
+                .when().patch(RestfulBooker.Booking.getUrl()+"/"+id)
+                .then().assertThat().statusCode(sCode).log().all();
+    }
+
+    private String getBody(String firstname){
         return "{" +
-                "\"totalprice\":\"" + totalprice + "\"" +
-                ", \"lastname\":\"" + lastname + "\"" +
+                "\"firstname\":\"" + firstname + "\"" +
                 "}";
 
     }

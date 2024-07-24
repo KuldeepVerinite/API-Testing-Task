@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>DatabaseConnectivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DatabaseConnectivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Method</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">io</span><span class="s2">.</span><span class="s1">restassured</span><span class="s2">.</span><span class="s1">response</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.*;</span>
+
+<span class="s0">public class </span><span class="s1">DatabaseConnectivity </span><span class="s2">{</span>
+   <span class="s0">static </span><span class="s1">PostService ps </span><span class="s2">= </span><span class="s0">new </span><span class="s1">PostService</span><span class="s2">();</span>
+
+    <span class="s0">public static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
+        <span class="s3">// JDBC connection parameters for H2 in-memory database</span>
+        <span class="s1">String dbUrl </span><span class="s2">= </span><span class="s4">&quot;jdbc:h2:mem:testdb&quot;</span><span class="s2">; </span><span class="s3">// in-memory database</span>
+        <span class="s1">String dbUser </span><span class="s2">= </span><span class="s4">&quot;in&quot;</span><span class="s2">;</span>
+        <span class="s1">String dbPassword </span><span class="s2">= </span><span class="s4">&quot;&quot;</span><span class="s2">;</span>
+
+<span class="s3">//        ps.getCreatedBooking();</span>
+        <span class="s0">try </span><span class="s2">(</span><span class="s1">Connection connection </span><span class="s2">= </span><span class="s1">DriverManager</span><span class="s2">.</span><span class="s1">getConnection</span><span class="s2">(</span><span class="s1">dbUrl</span><span class="s2">, </span><span class="s1">dbUser</span><span class="s2">, </span><span class="s1">dbPassword</span><span class="s2">)) {</span>
+            <span class="s3">// Step 1: Create table bookings</span>
+            <span class="s1">createBookingsTable</span><span class="s2">(</span><span class="s1">connection</span><span class="s2">);</span>
+
+            <span class="s3">// Step 2: Insert data from JSON example</span>
+            <span class="s1">insertBookingData</span><span class="s2">(</span><span class="s1">connection</span><span class="s2">, </span><span class="s4">&quot;Jim&quot;</span><span class="s2">, </span><span class="s4">&quot;Brown&quot;</span><span class="s2">, </span><span class="s5">111.00</span><span class="s2">, </span><span class="s0">true</span><span class="s2">, </span><span class="s4">&quot;2018-01-01&quot;</span><span class="s2">, </span><span class="s4">&quot;2019-01-01&quot;</span><span class="s2">, </span><span class="s4">&quot;Breakfast&quot;</span><span class="s2">);</span>
+
+            <span class="s3">// Step 3: Query and display data</span>
+            <span class="s1">queryAndDisplayBookings</span><span class="s2">(</span><span class="s1">connection</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">SQLException e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">createBookingsTable</span><span class="s2">(</span><span class="s1">Connection connection</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">SQLException </span><span class="s2">{</span>
+        <span class="s1">String createTableSQL </span><span class="s2">= </span><span class="s4">&quot;CREATE TABLE IF NOT EXISTS bookings (&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;booking_id INT AUTO_INCREMENT PRIMARY KEY,&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;firstname VARCHAR(255),&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;lastname VARCHAR(255),&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;totalprice DECIMAL(10, 2),&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;depositpaid BOOLEAN,&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;checkin_date DATE,&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;checkout_date DATE,&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;additionalneeds VARCHAR(255)&quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;)&quot;</span><span class="s2">;</span>
+        <span class="s1">Statement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">createStatement</span><span class="s2">();</span>
+        <span class="s1">statement</span><span class="s2">.</span><span class="s1">executeUpdate</span><span class="s2">(</span><span class="s1">createTableSQL</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Bookings table created successfully.&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">insertBookingData</span><span class="s2">(</span><span class="s1">Connection connection</span><span class="s2">, </span><span class="s1">String firstname</span><span class="s2">, </span><span class="s1">String lastname</span><span class="s2">, </span><span class="s0">double </span><span class="s1">totalprice</span><span class="s2">,</span>
+                                          <span class="s0">boolean </span><span class="s1">depositpaid</span><span class="s2">, </span><span class="s1">String checkinDate</span><span class="s2">, </span><span class="s1">String checkoutDate</span><span class="s2">, </span><span class="s1">String additionalneeds</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">SQLException </span><span class="s2">{</span>
+        <span class="s1">String insertSQL </span><span class="s2">= </span><span class="s4">&quot;INSERT INTO bookings (firstname, lastname, totalprice, depositpaid, checkin_date, checkout_date, additionalneeds) &quot; </span><span class="s2">+</span>
+                <span class="s4">&quot;VALUES (?, ?, ?, ?, ?, ?, ?)&quot;</span><span class="s2">;</span>
+        <span class="s1">PreparedStatement preparedStatement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span><span class="s1">insertSQL</span><span class="s2">);</span>
+        <span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">1</span><span class="s2">, </span><span class="s1">firstname</span><span class="s2">);</span>
+        <span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s1">lastname</span><span class="s2">);</span>
+        <span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">setDouble</span><span class="s2">(</span><span class="s5">3</span><span class="s2">, </span><span class="s1">totalprice</span><span class="s2">);</span>
+        <span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">setBoolean</span><span class="s2">(</span><span class="s5">4</span><span class="s2">, </span><span class="s1">depositpaid</span><span class="s2">);</span>
+        <span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">setDate</span><span class="s2">(</span><span class="s5">5</span><span class="s2">, </span><span class="s1">Date</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">checkinDate</span><span class="s2">));</span>
+        <span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">setDate</span><span class="s2">(</span><span class="s5">6</span><span class="s2">, </span><span class="s1">Date</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">checkoutDate</span><span class="s2">));</span>
+        <span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">7</span><span class="s2">, </span><span class="s1">additionalneeds</span><span class="s2">);</span>
+        <span class="s0">int </span><span class="s1">rowsInserted </span><span class="s2">= </span><span class="s1">preparedStatement</span><span class="s2">.</span><span class="s1">executeUpdate</span><span class="s2">();</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">rowsInserted </span><span class="s2">+ </span><span class="s4">&quot; row(s) inserted.&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">queryAndDisplayBookings</span><span class="s2">(</span><span class="s1">Connection connection</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">SQLException </span><span class="s2">{</span>
+        <span class="s1">String selectSQL </span><span class="s2">= </span><span class="s4">&quot;SELECT * FROM bookings&quot;</span><span class="s2">;</span>
+        <span class="s1">Statement statement </span><span class="s2">= </span><span class="s1">connection</span><span class="s2">.</span><span class="s1">createStatement</span><span class="s2">();</span>
+        <span class="s1">ResultSet resultSet </span><span class="s2">= </span><span class="s1">statement</span><span class="s2">.</span><span class="s1">executeQuery</span><span class="s2">(</span><span class="s1">selectSQL</span><span class="s2">);</span>
+        <span class="s0">while </span><span class="s2">(</span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()) {</span>
+            <span class="s0">int </span><span class="s1">bookingId </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s4">&quot;booking_id&quot;</span><span class="s2">);</span>
+            <span class="s1">String firstname </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;firstname&quot;</span><span class="s2">);</span>
+            <span class="s1">String lastname </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;lastname&quot;</span><span class="s2">);</span>
+            <span class="s0">double </span><span class="s1">totalprice </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getDouble</span><span class="s2">(</span><span class="s4">&quot;totalprice&quot;</span><span class="s2">);</span>
+            <span class="s0">boolean </span><span class="s1">depositpaid </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getBoolean</span><span class="s2">(</span><span class="s4">&quot;depositpaid&quot;</span><span class="s2">);</span>
+            <span class="s1">Date checkinDate </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getDate</span><span class="s2">(</span><span class="s4">&quot;checkin_date&quot;</span><span class="s2">);</span>
+            <span class="s1">Date checkoutDate </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getDate</span><span class="s2">(</span><span class="s4">&quot;checkout_date&quot;</span><span class="s2">);</span>
+            <span class="s1">String additionalneeds </span><span class="s2">= </span><span class="s1">resultSet</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;additionalneeds&quot;</span><span class="s2">);</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Booking ID: &quot; </span><span class="s2">+ </span><span class="s1">bookingId </span><span class="s2">+</span>
+                    <span class="s4">&quot;, Name: &quot; </span><span class="s2">+ </span><span class="s1">firstname </span><span class="s2">+ </span><span class="s4">&quot; &quot; </span><span class="s2">+ </span><span class="s1">lastname </span><span class="s2">+</span>
+                    <span class="s4">&quot;, Total Price: &quot; </span><span class="s2">+ </span><span class="s1">totalprice </span><span class="s2">+</span>
+                    <span class="s4">&quot;, Deposit Paid: &quot; </span><span class="s2">+ </span><span class="s1">depositpaid </span><span class="s2">+</span>
+                    <span class="s4">&quot;, Check-in Date: &quot; </span><span class="s2">+ </span><span class="s1">checkinDate </span><span class="s2">+</span>
+                    <span class="s4">&quot;, Checkout Date: &quot; </span><span class="s2">+ </span><span class="s1">checkoutDate </span><span class="s2">+</span>
+                    <span class="s4">&quot;, Additional Needs: &quot; </span><span class="s2">+ </span><span class="s1">additionalneeds</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

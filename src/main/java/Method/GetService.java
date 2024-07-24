@@ -1,6 +1,8 @@
 package Method;
 import API.RestfulBooker;
 import io.restassured.*;
+import io.restassured.response.Response;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 
@@ -41,9 +43,10 @@ public class GetService {
                 .then().assertThat().statusCode(200).log().all();
     }
 
-    public void getBooking(int id){
-        given().baseUri(RestfulBooker.Base.getUrl())
+    public Response getBooking(int id, int statusCode){
+        Response resp=given().baseUri(RestfulBooker.Base.getUrl())
                 .when().get(RestfulBooker.Booking.getUrl()+"/"+id)
-                .then().assertThat().statusCode(200).log().all();
+                .then().assertThat().statusCode(statusCode).log().all().extract().response();
+        return resp;
     }
 }
