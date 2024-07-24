@@ -2,7 +2,7 @@ package Method;
 
 import org.testng.annotations.Test;
 
-public class PTestClass2307 {
+public class UpdateBooking {
 
     PostService ps = new PostService();
 

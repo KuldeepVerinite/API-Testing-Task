@@ -8,18 +8,18 @@ import static io.restassured.RestAssured.when;
 
 public class GetService {
 
-    public void getBookingIds(){
+    public void getBookingIds(int sCode){
         given().baseUri(RestfulBooker.Base.getUrl())
                 .when().get(RestfulBooker.Booking.getUrl())
-                .then().assertThat().statusCode(200).log().all();
+                .then().assertThat().statusCode(sCode).log().all();
     }
 
-    public void getBookingIdsByFirstName(String firstname){
+    public void getBookingIdsByFirstName(String firstname, int sCode){
         given().baseUri(RestfulBooker.Base.getUrl())
                 .queryParam("firstname",firstname)
                 .contentType("application/json")
                 .when().get(RestfulBooker.Booking.getUrl())
-                .then().assertThat().statusCode(200).log().all();
+                .then().assertThat().statusCode(sCode).log().all();
     }
 
     public void getBookingIdsBylastName(String lastname){
@@ -43,10 +43,10 @@ public class GetService {
                 .then().assertThat().statusCode(200).log().all();
     }
 
-    public Response getBooking(int id, int statusCode){
+    public Response getBooking(int id, int sCode){
         Response resp=given().baseUri(RestfulBooker.Base.getUrl())
                 .when().get(RestfulBooker.Booking.getUrl()+"/"+id)
-                .then().assertThat().statusCode(statusCode).log().all().extract().response();
+                .then().assertThat().statusCode(sCode).log().all().extract().response();
         return resp;
     }
 }

@@ -2,7 +2,7 @@ package Method;
 
 import org.testng.annotations.Test;
 
-public class PTestClass2407 {
+public class PartialBooking {
 
     PatchService ps = new PatchService();
     CreateTokenDeleteBooking ctdb = new CreateTokenDeleteBooking();
@@ -40,6 +40,16 @@ public class PTestClass2407 {
     @Test(priority = 5)
     public void partialBookingValidAuth(){
         ps.patchUpdateBooking("You", 535, 200, "Basic YWRtaW46cGFzc3dvcmQxMjM=");
+    }
+
+    @Test(priority = 6)
+    public void partialBookingInvalidAuth(){
+        ps.patchUpdateBooking("You", 535, 403, "asdf");
+    }
+
+    @Test(priority = 7)
+    public void partialBookingWithoutAuth(){
+        ps.patchUpdateBooking("You", 535, 403, "");
     }
 
 }
