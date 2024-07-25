@@ -14,6 +14,15 @@ public class DeleteService {
                 .then().log().all().assertThat().statusCode(sCode);
     }
 
+    public void deleteBookingIds(String bookingIds,String token,int sCode){
+        given().baseUri(RestfulBooker.Base.getUrl())
+                .header("Cookie","token="+token)
+                .contentType("application/json")
+                .log().all()
+                .when().delete(RestfulBooker.Booking.getUrl()+"/"+bookingIds)
+                .then().log().all().assertThat().statusCode(sCode);
+    }
+
     public void deleteBookingUsingAuthorization(int id,String auth,int sCode){
         given().baseUri(RestfulBooker.Base.getUrl())
                 .header("Authorization",auth)

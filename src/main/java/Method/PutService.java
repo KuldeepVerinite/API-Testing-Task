@@ -15,6 +15,14 @@ public class PutService {
                 .then().assertThat().statusCode(sCode).log().all();
     }
 
+    public void updateMultipleBooking(String firstname, String lastname,String bookingIds, int sCode, String Auth ){
+        given().baseUri(RestfulBooker.Base.getUrl()).header("Authorization",Auth)
+                .contentType("application/json")
+                .body(getBody(firstname, lastname)).log().all()
+                .when().put(RestfulBooker.Booking.getUrl()+"/"+bookingIds)
+                .then().assertThat().statusCode(sCode).log().all();
+    }
+
     public void updateBookingCookie(String firstname, String lastname,int id, int sCode, String token ){
         given().baseUri(RestfulBooker.Base.getUrl()).header("Cookie","token="+token)
                 .contentType("application/json")

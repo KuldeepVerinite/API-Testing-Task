@@ -49,4 +49,12 @@ public class GetService {
                 .then().assertThat().statusCode(sCode).log().all().extract().response();
         return resp;
     }
+
+    public Response getMulipleBookingIds(String bookingIds, int sCode){
+        Response resp=given().baseUri(RestfulBooker.Base.getUrl())
+                .when().get(RestfulBooker.Booking.getUrl()+"/"+bookingIds)
+                .then().assertThat().statusCode(sCode).log().all().extract().response();
+        return resp;
+    }
+
 }

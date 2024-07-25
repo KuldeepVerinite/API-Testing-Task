@@ -40,6 +40,24 @@ public class DeleteBooking {
         ps.updateBooking("ps", "sp", 702, 405, "Basic YWRtaW46cGFzc3dvcmQxMjM=");
     }
 
+    @Test(priority = 6)
+    public void deleteMultipleId(){
+        String token =
+                ctdb.createToken1("admin", "password123", 200);
+        ds.deleteBookingIds("176,85", token, 201);
+    }
 
+    @Test(priority = 7)
+    public void getDeleteMultipleId(){
+        String token =
+                ctdb.createToken1("admin", "password123", 200);
+        gs.getMulipleBookingIds("176,85", 404);
+    }
+
+    @Test(priority = 8)
+    public void updateDeleteMultiple(){
+        ps.updateMultipleBooking("as","qw","176,85", 405,
+                "Basic YWRtaW46cGFzc3dvcmQxMjM=");
+    }
 
 }
