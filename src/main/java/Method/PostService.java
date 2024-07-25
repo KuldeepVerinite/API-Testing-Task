@@ -3,6 +3,8 @@ import API.RestfulBooker;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 
+import java.util.Random;
+
 import static io.restassured.RestAssured.given;
 
 public class PostService {
@@ -56,11 +58,12 @@ public class PostService {
     }
 
     private String getBody1(String firstname, String lastname) {
+        Random random = new Random();
         return "{" +
                 "\"firstname\":\"" + firstname + "\"" +
                 ", \"lastname\":\"" + lastname + "\"" +
-                ", \"totalprice\":" + 18 +
-                ", \"depositpaid\":" + true +
+                ", \"totalprice\":" + random.nextInt(1000) +
+                ", \"depositpaid\":" + random.nextBoolean() +
                 ", \"bookingdates\": {" +
                 "\"checkin\":\"2018-01-01\"" +
                 ", \"checkout\":\"2019-01-01\"" +
@@ -93,4 +96,45 @@ public class PostService {
         g.getBooking(bookingid,200);
     }
 
+    public String getCreatedBooking1(Response resp){
+        String jsonResponse = resp.asString();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        String firstname = jsonObject.getJSONObject("booking").getString("firstname");
+        return firstname;
+    }
+
+    public String getCreatedBooking2(Response resp,String name){
+        String jsonResponse = resp.asString();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        String getname = jsonObject.getJSONObject("booking").getString(name);
+        return getname;
+    }
+
+    public int getCreatedBooking3(Response resp,String name){
+        String jsonResponse = resp.asString();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        int price = jsonObject.getJSONObject("booking").getInt(name);
+        return price;
+    }
+
+    public boolean getCreatedBooking4(Response resp,String name){
+        String jsonResponse = resp.asString();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        boolean depositpaid = jsonObject.getJSONObject("booking").getBoolean(name);
+        return depositpaid;
+    }
+
+    public String getCreatedBooking5(Response resp,String name){
+        String jsonResponse = resp.asString();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        String getname = jsonObject.getJSONObject("booking").getJSONObject("bookingdates").getString(name);
+        return getname;
+    }
+
+    public int getCreatedBookingId(Response resp){
+        String jsonResponse = resp.asString();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        int booking_id = jsonObject.getInt("bookingid");
+        return booking_id;
+    }
 }

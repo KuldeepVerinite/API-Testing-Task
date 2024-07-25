@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>TestClass1707.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #2aacb8;}
+.s5 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TestClass1707.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Method</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">Assertion</span><span class="s2">.</span><span class="s1">Assertion</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">io</span><span class="s2">.</span><span class="s1">restassured</span><span class="s2">.</span><span class="s1">response</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">testng</span><span class="s2">.</span><span class="s1">annotations</span><span class="s2">.</span><span class="s1">Test</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">TestClass1707 </span><span class="s2">{</span>
+    <span class="s1">GetService gs</span><span class="s2">=</span><span class="s0">new </span><span class="s1">GetService</span><span class="s2">();</span>
+    <span class="s1">PostService ps</span><span class="s2">=</span><span class="s0">new </span><span class="s1">PostService</span><span class="s2">();</span>
+    <span class="s1">Assertion as</span><span class="s2">=</span><span class="s0">new </span><span class="s1">Assertion</span><span class="s2">();</span>
+
+    <span class="s1">@Test   </span><span class="s3">//GB_002</span>
+    <span class="s0">public void </span><span class="s1">responseBodyValidation</span><span class="s2">(){</span>
+        <span class="s1">Response resp</span><span class="s2">=</span><span class="s1">gs</span><span class="s2">.</span><span class="s1">getBooking</span><span class="s2">(</span><span class="s4">4</span><span class="s2">,</span><span class="s4">200</span><span class="s2">);</span>
+        <span class="s1">as</span><span class="s2">.</span><span class="s1">responseBodyValidation</span><span class="s2">(</span><span class="s1">resp</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Test   </span><span class="s3">//GB_003</span>
+    <span class="s0">public void </span><span class="s1">bookingNotFound</span><span class="s2">(){</span>
+       <span class="s1">gs</span><span class="s2">.</span><span class="s1">getBooking</span><span class="s2">(</span><span class="s4">10000</span><span class="s2">,</span><span class="s4">404</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Test   </span><span class="s3">//CB_001,   CB_004</span>
+    <span class="s0">public void </span><span class="s1">createBookingSuccessful</span><span class="s2">(){</span>
+        <span class="s1">Response resp</span><span class="s2">=</span><span class="s1">ps</span><span class="s2">.</span><span class="s1">createBooking</span><span class="s2">(</span><span class="s5">&quot;Kuldeep&quot;</span><span class="s2">,</span><span class="s5">&quot;Pawar&quot;</span><span class="s2">);</span>
+        <span class="s1">ps</span><span class="s2">.</span><span class="s1">getCreatedBooking</span><span class="s2">(</span><span class="s1">resp</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+<span class="s3">//    @Test</span>
+    <span class="s0">public void </span><span class="s1">createBookingUsingXML</span><span class="s2">(){</span>
+        <span class="s1">ps</span><span class="s2">.</span><span class="s1">createBookingXML</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+<span class="s3">//    @Test</span>
+    <span class="s0">public void </span><span class="s1">createBookingWithInvalidBody</span><span class="s2">(){</span>
+<span class="s3">//        ps.createBooking();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

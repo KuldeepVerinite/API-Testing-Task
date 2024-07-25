@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>TestClass2207.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TestClass2207.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Method</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">testng</span><span class="s2">.</span><span class="s1">annotations</span><span class="s2">.</span><span class="s1">Test</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">TestClass2207 </span><span class="s2">{</span>
+    <span class="s1">GetService gs </span><span class="s2">= </span><span class="s0">new </span><span class="s1">GetService</span><span class="s2">();</span>
+    <span class="s1">CreateTokenDeleteBooking ctdb </span><span class="s2">= </span><span class="s0">new </span><span class="s1">CreateTokenDeleteBooking</span><span class="s2">();</span>
+    <span class="s1">DeleteService ds </span><span class="s2">= </span><span class="s0">new </span><span class="s1">DeleteService</span><span class="s2">();</span>
+    <span class="s1">@Test</span>
+    <span class="s0">public void </span><span class="s1">deleteBooking</span><span class="s2">(){</span>
+        <span class="s1">gs</span><span class="s2">.</span><span class="s1">getBooking</span><span class="s2">(</span><span class="s3">638</span><span class="s2">,</span><span class="s3">200</span><span class="s2">);</span>
+        <span class="s1">ctdb</span><span class="s2">.</span><span class="s1">createToken1</span><span class="s2">(</span><span class="s4">&quot;admin&quot;</span><span class="s2">,</span><span class="s4">&quot;password123&quot;</span><span class="s2">,</span><span class="s3">200</span><span class="s2">,</span><span class="s3">100</span><span class="s2">);</span>
+        <span class="s1">gs</span><span class="s2">.</span><span class="s1">getBooking</span><span class="s2">(</span><span class="s3">200</span><span class="s2">,</span><span class="s3">404</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Test</span>
+    <span class="s0">public void </span><span class="s1">deleteBookingWithAuth</span><span class="s2">(){</span>
+        <span class="s1">gs</span><span class="s2">.</span><span class="s1">getBooking</span><span class="s2">(</span><span class="s3">837</span><span class="s2">,</span><span class="s3">200</span><span class="s2">);</span>
+        <span class="s1">ds</span><span class="s2">.</span><span class="s1">deleteBookingUsingAuthorization</span><span class="s2">(</span><span class="s3">837</span><span class="s2">,</span><span class="s4">&quot;Basic YWRtaW46cGFzc3dvcmQxMjM=&quot;</span><span class="s2">,</span><span class="s3">201</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Test</span>
+    <span class="s0">public void </span><span class="s1">deleteBookingWithInvalidAuth</span><span class="s2">(){</span>
+        <span class="s1">gs</span><span class="s2">.</span><span class="s1">getBooking</span><span class="s2">(</span><span class="s3">265</span><span class="s2">,</span><span class="s3">200</span><span class="s2">);</span>
+        <span class="s1">ds</span><span class="s2">.</span><span class="s1">deleteBookingUsingAuthorization</span><span class="s2">(</span><span class="s3">265</span><span class="s2">,</span><span class="s4">&quot;Basic YWRtaW46cGFzc3dvcmQ&quot;</span><span class="s2">,</span><span class="s3">403</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Test</span>
+    <span class="s0">public void </span><span class="s1">deleteBookingWithoutHeaders</span><span class="s2">(){</span>
+        <span class="s1">gs</span><span class="s2">.</span><span class="s1">getBooking</span><span class="s2">(</span><span class="s3">1025</span><span class="s2">,</span><span class="s3">200</span><span class="s2">);</span>
+        <span class="s1">ds</span><span class="s2">.</span><span class="s1">deleteBookingWithoutHeaders</span><span class="s2">(</span><span class="s3">1025</span><span class="s2">,</span><span class="s3">403</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
