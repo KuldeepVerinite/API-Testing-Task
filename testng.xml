@@ -2,6 +2,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
     <test verbose="2" preserve-order="true" name="D:/Repo/API-Testing-Task/API-Testing-Task">
+        <groups>
+                <run>
+                    <include name="Sanity" />
+                </run>
+        </groups>
         <classes>
             <class name="TestClass1507">
             <methods>

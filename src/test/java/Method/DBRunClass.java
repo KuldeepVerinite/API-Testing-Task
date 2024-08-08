@@ -14,7 +14,7 @@ public class DBRunClass {
     }
 
     @Test
-    public void UpdateBooking(){
+    public void updBooking(){
         dbc.updateBooking("Virat","Kohli",2065);
     }
 

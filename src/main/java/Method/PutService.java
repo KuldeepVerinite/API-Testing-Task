@@ -34,45 +34,39 @@ public class PutService {
                 "}";
     }
 
-    public String getCreatedBooking1(Response resp){
-        String jsonResponse = resp.asString();
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        String firstname = jsonObject.getString("firstname");
-        return firstname;
-    }
+//    public String getCreatedBooking1(Response resp){
+//        String jsonResponse = resp.asString();
+//        JSONObject jsonObject = new JSONObject(jsonResponse);
+//        String firstname = jsonObject.getString("firstname");
+//        return firstname;
+//    }
 
-    public String getCreatedBooking2(Response resp,String name){
+    public String getFirstOrLastnameOrAdditionalneedsForPutAndGet(Response resp,String name){
         String jsonResponse = resp.asString();
         JSONObject jsonObject = new JSONObject(jsonResponse);
         String getname = jsonObject.getString(name);
         return getname;
     }
 
-    public int getCreatedBooking3(Response resp,String name){
+    public int getPriceForPutAndGet(Response resp,String name){
         String jsonResponse = resp.asString();
         JSONObject jsonObject = new JSONObject(jsonResponse);
         int price = jsonObject.getInt(name);
         return price;
     }
 
-    public boolean getCreatedBooking4(Response resp,String name){
+    public boolean getDepositpaidForPutAndGet(Response resp,String name){
         String jsonResponse = resp.asString();
         JSONObject jsonObject = new JSONObject(jsonResponse);
         boolean depositpaid = jsonObject.getBoolean(name);
         return depositpaid;
     }
 
-    public String getCreatedBooking5(Response resp,String name){
+    public String getCheckInOrOutForPutAndGet(Response resp,String name){
         String jsonResponse = resp.asString();
         JSONObject jsonObject = new JSONObject(jsonResponse);
         String getname = jsonObject.getJSONObject("bookingdates").getString(name);
         return getname;
     }
 
-    public int getCreatedBookingId(Response resp){
-        String jsonResponse = resp.asString();
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        int booking_id = jsonObject.getInt("bookingid");
-        return booking_id;
-    }
 }

@@ -6,10 +6,10 @@ import java.sql.*;
 
 public class DBConnect {
 
-    static PostService ps = new PostService();
+    static PostService postservice = new PostService();
 
     int booking_id;
-    String firstname,lastname,checkin,checkout,additionalneeds;
+    String firstname,lastname,checkin,checkout,additionalneeds,firstname1,lastname1;
     double totalprice;
     boolean depositpaid;
 
@@ -145,15 +145,15 @@ public class DBConnect {
         String dbPassword = "Verinite@123";
 
 
-        Response resp = ps.createBooking("Rohit", "Sharma");
-        booking_id = ps.getCreatedBookingId(resp);
-        firstname = ps.getCreatedBooking1(resp);
-        lastname = ps.getCreatedBooking2(resp, "lastname");
-        totalprice = ps.getCreatedBooking3(resp, "totalprice");
-        depositpaid = ps.getCreatedBooking4(resp, "depositpaid");
-        checkin = ps.getCreatedBooking5(resp, "checkin");
-        checkout = ps.getCreatedBooking5(resp, "checkout");
-        additionalneeds = ps.getCreatedBooking2(resp, "additionalneeds");
+        Response resp = postservice.createBooking("Rohit", "Sharma");
+        booking_id = postservice.getBookingId(resp);
+        firstname = postservice.getFirstOrLastnameOrAdditionalneeds(resp,"firstname");
+        lastname = postservice.getFirstOrLastnameOrAdditionalneeds(resp, "lastname");
+        totalprice = postservice.getPrice(resp, "totalprice");
+        depositpaid = postservice.getDepositpaid(resp, "depositpaid");
+        checkin = postservice.getCheckInOrOut(resp, "checkin");
+        checkout = postservice.getCheckInOrOut(resp, "checkout");
+        additionalneeds = postservice.getFirstOrLastnameOrAdditionalneeds(resp, "additionalneeds");
 
 
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
@@ -173,21 +173,20 @@ public class DBConnect {
 
 
     public void updateBooking(String firstname,String lastname,int id) {
-        PutService pus = new PutService();
 
         String dbUrl = "jdbc:mysql://localhost:3306/db1"; // in-memory database
         String dbUser = "root";
         String dbPassword = "Verinite@123";
 
-        Response resp = pus.updateBooking(firstname, lastname, id);
+        Response resp = postservice.updateBooking(firstname, lastname, id);
 //            booking_id=pus.getCreatedBookingId(resp);
-        firstname = pus.getCreatedBooking1(resp);
-        lastname = pus.getCreatedBooking2(resp, "lastname");
-        totalprice = pus.getCreatedBooking3(resp, "totalprice");
-        depositpaid = pus.getCreatedBooking4(resp, "depositpaid");
-        checkin = pus.getCreatedBooking5(resp, "checkin");
-        checkout = pus.getCreatedBooking5(resp, "checkout");
-        additionalneeds = pus.getCreatedBooking2(resp, "additionalneeds");
+        firstname1 = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp,"firstname");
+        lastname1 = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp, "lastname");
+        totalprice = postservice.getPriceForPutAndGet(resp, "totalprice");
+        depositpaid = postservice.getDepositpaidForPutAndGet(resp, "depositpaid");
+        checkin = postservice.getCheckInOrOutForPutAndGet(resp, "checkin");
+        checkout = postservice.getCheckInOrOutForPutAndGet(resp, "checkout");
+        additionalneeds = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp, "additionalneeds");
 
 
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
@@ -195,7 +194,7 @@ public class DBConnect {
 //              createBookingsTable(connection);
 
             // Step 2: Insert data from JSON example
-            updateBookingData(connection, id, firstname, lastname, totalprice, depositpaid, checkin, checkout, additionalneeds);
+            updateBookingData(connection, id, firstname1, lastname1, totalprice, depositpaid, checkin, checkout, additionalneeds);
 
         } catch (SQLException e) {
             e.printStackTrace();
