@@ -1,11 +1,9 @@
 package Method;
 
-import io.restassured.response.Response;
-
 import java.sql.*;
 
 public class DatabaseConnectivity {
-   static PostService ps = new PostService();
+   static APIService ps = new APIService();
 
     public static void main(String[] args) {
         // JDBC connection parameters for H2 in-memory database
