@@ -5,33 +5,34 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 public class TestClass1707 {
-    PostService postservice=new PostService();
-    Assertion as=new Assertion();
+    Service service =new Service();
+    Assertion assertion =new Assertion();
 
-    @Test   //GB_002
+    @Test(priority = 1) //GB_002
     public void responseBodyValidation(){
-        Response resp=postservice.getBooking(4,200);
-        as.responseBodyValidation(resp);
+        //Need to change the response body because of Dynamic nature of Restful Booker API
+        Response resp= service.getBooking(4,200);
+        assertion.responseBodyValidation(resp);
     }
 
-    @Test   //GB_003
+    @Test(priority = 2)   //GB_003
     public void bookingNotFound(){
-        postservice.getBooking(10000,404);
+        service.getBooking(10000,404);
     }
 
-    @Test   //CB_001,   CB_004
+    @Test(priority = 3)   //CB_001,   CB_004
     public void createBookingSuccessful(){
-        Response resp=postservice.createBooking("Kuldeep","Pawar");
-        postservice.getCreatedBooking(resp);
+        Response resp= service.createBooking("Kuldeep","Pawar");
+        service.getCreatedBooking(resp);
     }
 
-    @Test       //CB_003    fail
+    @Test(priority = 4)       //CB_003    failed case
     public void createBookingUsingXML(){
-        postservice.createBookingXML();
+        service.createBookingXML();
     }
 
-//    @Test
+//    @Test(priority = 5)    //Needs to change JSON request body in 'Service' class
     public void createBookingWithInvalidBody(){
-//        postservice.createBooking();
+//        service.createBooking();
     }
 }

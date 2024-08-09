@@ -1,45 +1,43 @@
 import Assertion.Assertion;
-import Method.GetService;
-import Method.PostService;
+import Method.Service;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 public class TestClass1607 {
 
-    PostService postservice=new PostService();
-    Assertion as=new Assertion();
+    Service service =new Service();
 
     @Test(priority = 1)
     public void testGetBookingIdsByFirstName() {
-       Response resp = postservice.createBooking("Kuldeep","Pawar");
-        postservice.getBookingIdsByFirstName(postservice.getFirstOrLastnameOrAdditionalneeds(resp,"firstname"));
-        int id = postservice.getBookingId(resp);
-        postservice.getBooking(id,200);
+       Response resp = service.createBooking("Kuldeep","Pawar");
+        service.getBookingIdsByFirstName(service.getFirstOrLastnameOrAdditionalneeds(resp,"firstname"));
+        int id = service.getBookingId(resp);
+        service.getBooking(id,200);
     }
 
     @Test(priority = 2)
     public void testGetBookingIdsByLastName() {
-        Response resp = postservice.createBooking("Virat","Kohli");
-        postservice.getBookingIdsByFirstName(postservice.getFirstOrLastnameOrAdditionalneeds(resp,"lastname"));
-        int id = postservice.getBookingId(resp);
-        postservice.getBooking(id,200);
+        Response resp = service.createBooking("Virat","Kohli");
+        service.getBookingIdsByFirstName(service.getFirstOrLastnameOrAdditionalneeds(resp,"lastname"));
+        int id = service.getBookingId(resp);
+        service.getBooking(id,200);
     }
 
     @Test(priority = 3)
     public void testGetBookingIdsByCheckIn() {
-        Response resp = postservice.createBooking("Rohit","Sharma");
-        postservice.getBookingIdsByCheckin(postservice.getCheckInOrOut(resp,"checkin"));
+        Response resp = service.createBooking("Rohit","Sharma");
+        service.getBookingIdsByCheckin(service.getCheckInOrOut(resp,"checkin"));
     }
 
     @Test(priority = 4)
     public void testGetBookingIdsByCheckOut() {
-        Response resp = postservice.createBooking("Jasprit","Bumrah");
-        postservice.getBookingIdsByCheckin(postservice.getCheckInOrOut(resp,"checkout"));
+        Response resp = service.createBooking("Jasprit","Bumrah");
+        service.getBookingIdsByCheckin(service.getCheckInOrOut(resp,"checkout"));
     }
 
     @Test(priority = 5)
     public void testGetBookingById() {
-        Response resp = postservice.createBooking("Yuvraj","Singh");
-        postservice.getBooking(postservice.getBookingId(resp),200);
+        Response resp = service.createBooking("Yuvraj","Singh");
+        service.getBooking(service.getBookingId(resp),200);
     }
 }

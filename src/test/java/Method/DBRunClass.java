@@ -13,13 +13,13 @@ public class DBRunClass {
         dbc.convertRespIntoDatabase();
     }
 
-    @Test
+    @Test(priority = 2)
     public void updBooking(){
         dbc.updateBooking("Virat","Kohli",2065);
     }
 
-    @Test
+    @Test(priority = 3)
     public void deleteBooking(){
-        dbc.DeleteBooking(2074);
+        dbc.deleteBooking(2074);
     }
 }

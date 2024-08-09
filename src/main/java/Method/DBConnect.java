@@ -6,7 +6,7 @@ import java.sql.*;
 
 public class DBConnect {
 
-    static PostService postservice = new PostService();
+    static Service postservice = new Service();
 
     int booking_id;
     String firstname,lastname,checkin,checkout,additionalneeds,firstname1,lastname1;
@@ -112,7 +112,7 @@ public class DBConnect {
         System.out.println(rowsUpdated + " row(s) updated.");
     }
 
-    private static void deleteBooking(Connection connection, int bookingId) throws SQLException {
+    private static void deleteBookingFromDb(Connection connection, int bookingId) throws SQLException {
         String deleteSQL = "DELETE FROM bookings1 WHERE booking_id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL);
         preparedStatement.setInt(1, bookingId);
@@ -157,13 +157,11 @@ public class DBConnect {
 
 
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
-            // Step 1: Create table
-//              createBookingsTable(connection);
 
-            // Step 2: Insert data from JSON example
+            // Step 1: Insert data from JSON example
             insertBookingData(connection, booking_id, firstname, lastname, totalprice, depositpaid, checkin, checkout, additionalneeds);
 
-            // Step 3: Query and display data
+            // Step 2: Query and display data
             queryAndDisplayBookings(connection);
 
         } catch (SQLException e) {
@@ -179,7 +177,6 @@ public class DBConnect {
         String dbPassword = "Verinite@123";
 
         Response resp = postservice.updateBooking(firstname, lastname, id);
-//            booking_id=pus.getCreatedBookingId(resp);
         firstname1 = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp,"firstname");
         lastname1 = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp, "lastname");
         totalprice = postservice.getPriceForPutAndGet(resp, "totalprice");
@@ -190,10 +187,8 @@ public class DBConnect {
 
 
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
-            // Step 1: Create table
-//              createBookingsTable(connection);
 
-            // Step 2: Insert data from JSON example
+            // Step 1: Update data
             updateBookingData(connection, id, firstname1, lastname1, totalprice, depositpaid, checkin, checkout, additionalneeds);
 
         } catch (SQLException e) {
@@ -201,10 +196,10 @@ public class DBConnect {
         }
     }
 
-    public void DeleteBooking(int id){
+    public void deleteBooking(int id){
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db1", "root", "Verinite@123");
-            deleteBooking(connection, id); // Replace 123 with the actual bookingId you want to delete
+            deleteBookingFromDb(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }

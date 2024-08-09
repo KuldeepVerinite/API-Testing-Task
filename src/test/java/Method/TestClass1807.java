@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 public class TestClass1807 {
 
-PostService postservice=new PostService();
+Service service =new Service();
 
 
 @AfterMethod
@@ -14,20 +14,20 @@ public void afterMethod(){
     System.out.println("---------------------------------Test Ended Here---------------------------------------");
 }
 
-@Test       //  UB_001, UB_004
+@Test(priority = 1)       //  UB_001, UB_004
 public void updateBooking(){
-    Response resp = postservice.createBooking("Kuldeep","Pawar");
-    postservice.getBooking(postservice.getBookingId(resp),200);
-    postservice.updateBooking("","",postservice.getBookingId(resp));
-    postservice.getBooking(postservice.getBookingId(resp),200);
+    Response resp = service.createBooking("Kuldeep","Pawar");
+    service.getBooking(service.getBookingId(resp),200);
+    service.updateBooking("","", service.getBookingId(resp));
+    service.getBooking(service.getBookingId(resp),200);
 }
 
-@Test       //  PU_001, PU_002, PU_010
+@Test(priority = 2)       //  PU_001, PU_002, PU_010
 public void partialUpdateBooking(){
-    Response resp = postservice.createBooking("Navdeep","Pawar");
-    postservice.getBooking(postservice.getBookingId(resp),200);
-    postservice.patchUpdateBooking("Kuldeep","Pawar",postservice.getBookingId(resp));
-    postservice.getBooking(postservice.getBookingId(resp),200);
+    Response resp = service.createBooking("Navdeep","Pawar");
+    service.getBooking(service.getBookingId(resp),200);
+    service.patchUpdateBooking("Kuldeep","Pawar", service.getBookingId(resp));
+    service.getBooking(service.getBookingId(resp),200);
     }
 
 }

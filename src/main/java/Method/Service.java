@@ -7,7 +7,7 @@ import java.util.Random;
 
 import static io.restassured.RestAssured.given;
 
-public class PostService {
+public class Service {
 
     public Response createToken(String username, String password, int Scode) {
         Response resp = given().baseUri(RestfulBooker.Base.getUrl()).contentType("application/json")
@@ -87,8 +87,8 @@ public class PostService {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         int bookingid = jsonObject.getInt("bookingid");
         System.out.println(bookingid);
-        GetService g= new GetService();
-        g.getBooking(bookingid,200);
+        Service service= new Service();
+        service.getBooking(bookingid,200);
     }
 
 

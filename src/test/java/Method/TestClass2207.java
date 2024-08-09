@@ -4,34 +4,34 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 public class TestClass2207 {
-    PostService postservice=new PostService();
-    @Test
+    Service service =new Service();
+    @Test(priority = 1)
     public void deleteBooking(){
-        Response resp = postservice.createBooking("Kuldeep","Pawar");
-        postservice.getBooking(postservice.getBookingId(resp),200);
-        postservice.createTokenDeleteBooking("admin","password123",200,postservice.getBookingId(resp));
-        postservice.getBooking(postservice.getBookingId(resp),404);
+        Response resp = service.createBooking("Kuldeep","Pawar");
+        service.getBooking(service.getBookingId(resp),200);
+        service.createTokenDeleteBooking("admin","password123",200, service.getBookingId(resp));
+        service.getBooking(service.getBookingId(resp),404);
     }
 
-    @Test
+    @Test(priority = 2)
     public void deleteBookingWithAuth(){
-        Response resp = postservice.createBooking("Kuldeep","Pawar");
-        postservice.getBooking(postservice.getBookingId(resp),200);
-        postservice.deleteBookingUsingAuthorization(postservice.getBookingId(resp),"Basic YWRtaW46cGFzc3dvcmQxMjM=",201);
+        Response resp = service.createBooking("Kuldeep","Pawar");
+        service.getBooking(service.getBookingId(resp),200);
+        service.deleteBookingUsingAuthorization(service.getBookingId(resp),"Basic YWRtaW46cGFzc3dvcmQxMjM=",201);
     }
 
-    @Test
+    @Test(priority = 3)
     public void deleteBookingWithInvalidAuth(){
-        Response resp = postservice.createBooking("Kuldeep","Pawar");
-        postservice.getBooking(postservice.getBookingId(resp),200);
-        postservice.deleteBookingUsingAuthorization(postservice.getBookingId(resp),"Basic YWRtaW46cGFzc3dvcmQ",403);
+        Response resp = service.createBooking("Kuldeep","Pawar");
+        service.getBooking(service.getBookingId(resp),200);
+        service.deleteBookingUsingAuthorization(service.getBookingId(resp),"Basic YWRtaW46cGFzc3dvcmQ",403);
     }
 
-    @Test
+    @Test(priority = 4)
     public void deleteBookingWithoutHeaders(){
-        Response resp = postservice.createBooking("Kuldeep","Pawar");
-        postservice.getBooking(postservice.getBookingId(resp),200);
-        postservice.deleteBookingWithoutHeaders(postservice.getBookingId(resp),403);
+        Response resp = service.createBooking("Kuldeep","Pawar");
+        service.getBooking(service.getBookingId(resp),200);
+        service.deleteBookingWithoutHeaders(service.getBookingId(resp),403);
     }
 
 }

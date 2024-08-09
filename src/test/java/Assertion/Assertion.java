@@ -4,16 +4,27 @@ import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.testng.Assert;
 
-import java.lang.reflect.Method;
-
 public class Assertion {
 
-    public void responseBodyValidation(Response resp){
+    public void responseBodyValidationForError(Response resp){
         String jsonResponse = resp.asString();
         JSONObject jsonObject = new JSONObject(jsonResponse);
         String respBody = jsonObject.toString();
         Assert.assertEquals(respBody,responseBodyForError());
         if(respBody.equals(responseBodyForError())){
+            System.out.println("Expected body and Actual body is same");
+        }
+        else{
+            System.out.println("Not same");
+        }
+    }
+
+    public void responseBodyValidation(Response resp){
+        String jsonResponse = resp.asString();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        String respBody = jsonObject.toString();
+        Assert.assertEquals(respBody,responseBody());
+        if(respBody.equals(responseBody())){
             System.out.println("Expected body and Actual body is same");
         }
         else{
