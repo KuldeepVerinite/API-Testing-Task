@@ -22,4 +22,10 @@ public class DBRunClass {
     public void deleteBooking(){
         dbc.deleteBooking(2074);
     }
+
+    @Test(priority = 4)
+    public void updBookingUsingPatch(){
+        dbc.updateBookingUsingPatch("Virat","Kohli",740);
+    }
+
 }

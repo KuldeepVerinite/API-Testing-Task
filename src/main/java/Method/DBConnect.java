@@ -196,6 +196,32 @@ public class DBConnect {
         }
     }
 
+    public void updateBookingUsingPatch(String firstname,String lastname,int id) {
+
+        String dbUrl = "jdbc:mysql://localhost:3306/db1"; // in-memory database
+        String dbUser = "root";
+        String dbPassword = "Verinite@123";
+
+        Response resp = postservice.patchUpdateBooking(firstname, lastname, id);
+        firstname1 = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp,"firstname");
+        lastname1 = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp, "lastname");
+        totalprice = postservice.getPriceForPutAndGet(resp, "totalprice");
+        depositpaid = postservice.getDepositpaidForPutAndGet(resp, "depositpaid");
+        checkin = postservice.getCheckInOrOutForPutAndGet(resp, "checkin");
+        checkout = postservice.getCheckInOrOutForPutAndGet(resp, "checkout");
+        additionalneeds = postservice.getFirstOrLastnameOrAdditionalneedsForPutAndGet(resp, "additionalneeds");
+
+
+        try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
+
+            // Step 1: Update data
+            updateBookingData(connection, id, firstname1, lastname1, totalprice, depositpaid, checkin, checkout, additionalneeds);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteBooking(int id){
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db1", "root", "Verinite@123");

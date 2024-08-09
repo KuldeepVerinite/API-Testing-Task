@@ -167,13 +167,14 @@ public class Service {
 
 //  PatchService
 
-    public void patchUpdateBooking(String firstname, String lastname,int id){
-        given().baseUri(RestfulBooker.Base.getUrl())
+    public Response patchUpdateBooking(String firstname, String lastname,int id){
+       Response resp = given().baseUri(RestfulBooker.Base.getUrl())
                 .header("Authorization","Basic YWRtaW46cGFzc3dvcmQxMjM=")
                 .contentType("application/json")
                 .body(getBodyForPatch(firstname, lastname)).log().all()
                 .when().patch(RestfulBooker.Booking.getUrl()+"/"+id)
-                .then().assertThat().statusCode(200).log().all();
+                .then().assertThat().statusCode(200).log().all().extract().response();
+       return resp;
     }
 
     private String getBodyForPatch(String firstname, String lastname){
